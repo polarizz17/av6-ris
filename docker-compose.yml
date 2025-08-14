@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  ris-watcher:
+    build: .
+    container_name: ris-watcher
+    volumes:
+      - ./host_data/incoming:/data/incoming
+      - ./host_data/work:/data/work
+      - ./host_data/logs:/data/logs
+    env_file:
+      - .env
+    restart: unless-stopped
