@@ -1,1 +1,1 @@
-# ris_watcher package
+__all__ = []

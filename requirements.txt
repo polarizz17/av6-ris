@@ -1,5 +1,7 @@
-watchdog
-boto3
-paramiko
-requests
-python-dotenv
+watchdog>=4.0.0
+requests>=2.31.0
+# optional uploaders / features:
+paramiko>=3.4.0        # for SFTP
+boto3>=1.34.0          # for S3
+pydicom>=2.4.4         # for DICOM-based grouping
+python-dotenv>=1.0.1   # to load .env automatically
