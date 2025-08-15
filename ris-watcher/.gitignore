@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+*.env
+work/
+logs/
+host_data/
+*.zip
+ris_watcher/__pycache__/

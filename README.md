@@ -1,35 +1,21 @@
-# RIS Watcher (DICOM → ZIP → Upload)
+# RIS System (Watcher + Upload Server)
 
-Cross-platform Python service that:
-- Watches a folder in real time for DICOM files
-- Groups by StudyInstanceUID (if `pydicom` present) or by folder
-- Creates ZIP archives
-- Uploads via HTTP / SFTP / S3
-- Type-checked (mypy), linted (ruff), formatted (black)
-- Docker + docker-compose, pre-commit hooks
+This bundle runs:
+- **ris-upload-server** (FastAPI) at http://localhost:8080 (saves uploads to `ris-upload-server/archive`)
+- **ris-watcher** (Python service) that watches `ris-watcher/incoming`, zips DICOMs, uploads to the server
 
-## Local quick start
+## One-command start
 ```bash
-python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt -r requirements-dev.txt
-pre-commit install
-cp .env.example .env
-mkdir -p incoming
-python run.py
-```
-
-Type/lint:
-```bash
-mypy . && ruff check . && black --check .
-```
-
-## Docker (macOS-friendly)
-```bash
-mkdir -p host_data/incoming host_data/work host_data/logs
 docker compose up -d --build
 docker compose logs -f
 ```
-If volume events are flaky on macOS, set `RIS_OBSERVER=polling` in `.env` or `docker-compose.yml`.
 
-## Configure upload
-Set `RIS_UPLOAD_METHOD=HTTP|SFTP|S3` and fill the respective envs in `.env`.
+## Where to drop files
+Put DICOM files into `./ris-watcher/incoming/`. The watcher groups them, zips, and POSTs to the server.
+
+## Auth
+Both sides use the same token by default: `changeme` (see `ris-watcher/.env` and `ris-upload-server/.env`).
+
+## Tuning
+- Edit `ris-watcher/.env` for stability, grouping, and upload settings.
+- On macOS, if file events are flaky on bind mounts, set `RIS_OBSERVER=polling` in `ris-watcher/.env`.
