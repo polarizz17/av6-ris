@@ -8,3 +8,4 @@ logs/
 host_data/
 *.zip
 ris_watcher/__pycache__/
+*.dcm
