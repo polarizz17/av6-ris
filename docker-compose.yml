@@ -19,7 +19,6 @@ services:
       - ./ris-watcher/.env
     depends_on:
       - ris-upload-server
-    # Map host folders for testing; in production you may bind a modality drop path here
     volumes:
       - ./ris-watcher/incoming:/data/incoming
       - ./ris-watcher/work:/data/work

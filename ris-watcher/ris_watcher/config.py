@@ -48,4 +48,8 @@ RETRY_BACKOFF_SEC = float(os.getenv("RIS_RETRY_BACKOFF", "2.0"))
 
 LOG_LEVEL = os.getenv("RIS_LOG_LEVEL", "INFO").upper()
 STATE_FILE = WORK_DIR / "state.json"
+
 OBSERVER_BACKEND = os.getenv("RIS_OBSERVER", "auto").lower()
+
+# DICOM compression setting: 'none' or 'jpeg2000_lossless'
+DICOM_COMPRESSION = os.getenv("RIS_DICOM_COMPRESSION", "none").strip().lower()

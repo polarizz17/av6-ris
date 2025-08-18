@@ -4,3 +4,7 @@ paramiko>=3.4.0
 boto3>=1.34.0
 pydicom>=2.4.4
 python-dotenv>=1.0.1
+# Optional codecs (decoding). Compression uses gdcmconv CLI in Docker.
+pylibjpeg>=2.0.0
+pylibjpeg-libjpeg>=2.0.0
+pylibjpeg-openjpeg>=2.0.0

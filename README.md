@@ -1,21 +1,25 @@
-# RIS System (Watcher + Upload Server)
+# RIS System (Watcher + Upload Server) with Lossless DICOM Compression
 
 This bundle runs:
 - **ris-upload-server** (FastAPI) at http://localhost:8080 (saves uploads to `ris-upload-server/archive`)
-- **ris-watcher** (Python service) that watches `ris-watcher/incoming`, zips DICOMs, uploads to the server
+- **ris-watcher** (Python) watches `ris-watcher/incoming`, compresses DICOMs (lossless JPEG 2000), zips, and uploads
 
-## One-command start
+## Start
 ```bash
 docker compose up -d --build
 docker compose logs -f
 ```
 
-## Where to drop files
-Put DICOM files into `./ris-watcher/incoming/`. The watcher groups them, zips, and POSTs to the server.
+## Drop DICOM files
+Place `.dcm` files in `./ris-watcher/incoming/`
+
+## Compression
+The watcher can compress DICOMs (lossless JPEG 2000) before zipping.
+Set in `ris-watcher/.env`:
+```
+RIS_DICOM_COMPRESSION=jpeg2000_lossless   # or 'none'
+```
+We use `gdcmconv` from **gdcm-tools** inside the watcher Docker image.
 
 ## Auth
-Both sides use the same token by default: `changeme` (see `ris-watcher/.env` and `ris-upload-server/.env`).
-
-## Tuning
-- Edit `ris-watcher/.env` for stability, grouping, and upload settings.
-- On macOS, if file events are flaky on bind mounts, set `RIS_OBSERVER=polling` in `ris-watcher/.env`.
+Both services share `API_TOKEN=changeme` by default (see `.env` files). Change both to the same value if needed.

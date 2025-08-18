@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, File, UploadFile, HTTPException, Header, Depends
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -33,8 +32,7 @@ def verify_auth(authorization: Optional[str] = Header(None)) -> None:
 @app.post("/upload", response_model=UploadResult)
 async def upload_zip(file: UploadFile = File(...), _: None = Depends(verify_auth)):
     filename = file.filename or "upload.zip"
-    ext = Path(filename).suffix.lower()
-    if ext not in {".zip"}:
+    if not filename.lower().endswith(".zip"):
         raise HTTPException(status_code=400, detail="Only .zip files are accepted")
 
     ts = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
@@ -45,7 +43,7 @@ async def upload_zip(file: UploadFile = File(...), _: None = Depends(verify_auth
     try:
         with dest_path.open("wb") as out:
             while True:
-                chunk = await file.read(1024 * 1024)
+                chunk = await file.read(1024 * 1024)  # 1 MiB
                 if not chunk:
                     break
                 size += len(chunk)
