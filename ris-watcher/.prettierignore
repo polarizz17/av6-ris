@@ -1,0 +1,6 @@
+**/*.py
+work/
+logs/
+dist/
+build/
+host_data/

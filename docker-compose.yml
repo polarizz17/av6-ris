@@ -1,14 +1,26 @@
 version: "3.9"
 services:
+  ris-upload-server:
+    build: ./ris-upload-server
+    container_name: ris-upload-server
+    restart: unless-stopped
+    env_file:
+      - ./ris-upload-server/.env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./ris-upload-server/archive:/app/archive
+
   ris-watcher:
-    build: .
+    build: ./ris-watcher
     container_name: ris-watcher
     restart: unless-stopped
-    environment:
-      - RIS_OBSERVER=auto
     env_file:
-      - .env
+      - ./ris-watcher/.env
+    depends_on:
+      - ris-upload-server
+    # Map host folders for testing; in production you may bind a modality drop path here
     volumes:
-      - ./host_data/incoming:/data/incoming
-      - ./host_data/work:/data/work
-      - ./host_data/logs:/data/logs
+      - ./ris-watcher/incoming:/data/incoming
+      - ./ris-watcher/work:/data/work
+      - ./ris-watcher/logs:/data/logs

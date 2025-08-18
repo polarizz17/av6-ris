@@ -1,7 +1,5 @@
 import os
 from pathlib import Path
-
-# (Optional) load .env if available
 try:
     from dotenv import load_dotenv  # type: ignore
     load_dotenv()
@@ -21,7 +19,7 @@ for d in (WATCH_DIR, WORK_DIR, LOG_DIR, STAGING_DIR, OUTBOX_DIR, PROCESSED_DIR, 
 
 UPLOAD_METHOD = os.getenv("RIS_UPLOAD_METHOD", "HTTP").upper()
 UPLOAD_URL = os.getenv("RIS_UPLOAD_URL", "http://127.0.0.1:8080/upload")
-API_TOKEN = os.getenv("RIS_API_TOKEN", "")
+API_TOKEN = os.getenv("API_TOKEN", "")
 
 SFTP_HOST = os.getenv("RIS_SFTP_HOST", "")
 SFTP_PORT = int(os.getenv("RIS_SFTP_PORT", "22"))
@@ -50,6 +48,4 @@ RETRY_BACKOFF_SEC = float(os.getenv("RIS_RETRY_BACKOFF", "2.0"))
 
 LOG_LEVEL = os.getenv("RIS_LOG_LEVEL", "INFO").upper()
 STATE_FILE = WORK_DIR / "state.json"
-
-# Observer backend selection: auto | polling
 OBSERVER_BACKEND = os.getenv("RIS_OBSERVER", "auto").lower()
