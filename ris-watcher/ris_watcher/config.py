@@ -53,3 +53,4 @@ OBSERVER_BACKEND = os.getenv("RIS_OBSERVER", "auto").lower()
 
 # DICOM compression setting: 'none' or 'jpeg2000_lossless'
 DICOM_COMPRESSION = os.getenv("RIS_DICOM_COMPRESSION", "none").strip().lower()
+RIS_FORCE_PROCESS = os.getenv("RIS_FORCE_PROCESS", "false").strip().lower()

@@ -1,6 +1,8 @@
 import json, threading
 from .config import STATE_FILE
 from .logging_setup import get_logger
+from .config import RIS_FORCE_PROCESS
+
 logger = get_logger(__name__)
 _state_lock = threading.Lock()
 _STATE: dict[str, list[str]] = {"processed_hashes": []}
@@ -21,5 +23,7 @@ def remember_hash(h: str) -> None:
             lst.append(h); _STATE['processed_hashes'] = lst[-20000:]
     save_state()
 def already_processed(h: str) -> bool:
+    if RIS_FORCE_PROCESS == "true":
+        return False
     with _state_lock:
         return h in _STATE.get('processed_hashes', [])
